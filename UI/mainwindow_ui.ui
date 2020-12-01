@@ -252,7 +252,7 @@ border-radius: 20px;
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="Calendar" name="calendar_2">
+        <widget class="Calendar" name="calendar">
          <property name="styleSheet">
           <string notr="true">QCalnedarWidget {
 color: rgb(0, 170, 0);}</string>
@@ -289,7 +289,7 @@ font: 75 14pt &quot;IBM Plex Sans&quot;;
           </widget>
          </item>
          <item>
-          <widget class="QListWidget" name="tasks_list_2"/>
+          <widget class="QListWidget" name="tasks_list"/>
          </item>
         </layout>
        </item>
