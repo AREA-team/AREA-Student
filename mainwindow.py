@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication
 
 from redefined_widgets import Window
 from UI.mainwindow_ui import Ui_MainWindow
-from tools import Server, ServerUnreachableException
+from tools import ConnectThread
 
 
 class MainWindow(Window, Ui_MainWindow):
@@ -20,29 +20,31 @@ class MainWindow(Window, Ui_MainWindow):
                                 f'{self.class_number + self.class_letter}')
         self.header.setHeight(30)
         self.logo_label.setPixmap(QPixmap('System Files/Logo.png'))
-        self.connect_with_server()
-        self.header.conn_state.clicked.connect(self.connect_with_server)
+
+        self.connectThread = ConnectThread(self)
+        self.connectThread.start()
+        self.header.conn_state.clicked.connect(self.connectThread.start)
+        self.connectThread.connected.connect(self.connected)
+        self.connectThread.disconnected.connect(self.disable_window)
         self.quit_btn.clicked.connect(self.exit)
 
     def exit(self):
         self.need_auth = True
         self.close()
 
-    def connect_with_server(self):
-        if not self.good_conn:
-            try:
-                self.db = Server()
-                self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
-                self.verticalLayout_2.setEnabled(True)
-                self.good_conn = True
-            except ServerUnreachableException:
-                self.disable_window()
-
     def disable_window(self):
+        self.connectThread.quit()
         self.header.conn_state.setP(QIcon(QPixmap('System Files/no_connection.png')))
         self.good_conn = False
         self.verticalLayout_2.setEnabled(False)
         self.header.setEnabled(True)
+
+    def connected(self):
+        self.connectThread.quit()
+        self.db = self.connectThread.db
+        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
+        self.setEnabled(True)
+        self.good_conn = True
 
 
 if __name__ == '__main__':

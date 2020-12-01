@@ -1,5 +1,7 @@
 from socket import socket
 
+from PyQt5.QtCore import QThread, pyqtSignal
+
 SERVER_IP = '188.19.106.140'
 SERVER_PORT = 14600
 
@@ -7,6 +9,7 @@ SERVER_PORT = 14600
 class Server:
     def __init__(self):
         self.s = socket()
+        self.s.settimeout(1.0)
         try:
             self.s.connect((SERVER_IP, SERVER_PORT))
         except ConnectionError:
@@ -31,6 +34,24 @@ class Server:
         except ConnectionError:
             window.disable_window()
             return current_items
+
+
+class ConnectThread(QThread):
+    connected = pyqtSignal()
+    disconnected = pyqtSignal()
+
+    def __init__(self, window):
+        super().__init__()
+        self.db = None
+        self.window = window
+
+    def run(self):
+        if not self.window.good_conn:
+            try:
+                self.db = Server()
+                self.connected.emit()
+            except ServerUnreachableException or TimeoutError:
+                self.disconnected.emit()
 
 
 class ServerUnreachableException(ConnectionError):

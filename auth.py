@@ -2,14 +2,15 @@ import sys
 
 import googleapiclient.discovery
 import httplib2
+
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QApplication
 
 from oauth2client.service_account import ServiceAccountCredentials
 
 from redefined_widgets import Window
-from tools import Server, BadPasswordException, UserNotRegisteredException, \
-    UserRegisteredException, ServerUnreachableException
+from tools import BadPasswordException, UserNotRegisteredException, \
+    UserRegisteredException, ConnectThread
 from UI.auth_ui import Ui_Dialog
 
 SERVER_IP = '188.19.106.140'
@@ -29,7 +30,6 @@ class AuthDialog(Window, Ui_Dialog):
         self.good_conn = False
         self.changing = False
         self.widget_type = None
-        self.db: Server
         self.db = None
         self.countries = None
         self.cities = None
@@ -37,11 +37,14 @@ class AuthDialog(Window, Ui_Dialog):
         self.class_numbers = None
         self.class_letters = None
         self.setMouseTracking(True)
-        self.connect_with_server()
-        self.header.conn_state.clicked.connect(self.connect_with_server)
+
+        self.connectThread = ConnectThread(self)
+        self.connectThread.start()
+        self.header.conn_state.clicked.connect(self.connectThread.start)
+        self.connectThread.connected.connect(self.connected)
+        self.connectThread.disconnected.connect(self.disable_window)
         self.sign_in_btn.clicked.connect(self.sign_in)
         self.sign_up_btn.clicked.connect(self.sign_up)
-        self.show()
 
     def get_tables(self, school, class_number, class_letter):
         credentials_file = 'System Files/homework-spreadsheet-d24c606fd7ba.json'
@@ -124,6 +127,7 @@ class AuthDialog(Window, Ui_Dialog):
             try:
                 if self.authorize():
                     self.authorized = True
+                    self.db = None
                     self.close()
             except UserNotRegisteredException:
                 self.state_label1.setText('Вы не зарегистрированы')
@@ -153,6 +157,7 @@ class AuthDialog(Window, Ui_Dialog):
             try:
                 if self.authorize(mode='register'):
                     self.authorized = True
+                    self.db = None
                     self.close()
             except UserRegisteredException:
                 self.state_label2.setText('Вы уже зарегистрированы')
@@ -162,19 +167,6 @@ class AuthDialog(Window, Ui_Dialog):
                 self.state_label2.setText('Неверный пароль')
             finally:
                 self.state_label2.setStyleSheet(self.bad_stylesheet)
-
-    def connect_with_server(self):
-        if not self.good_conn:
-            try:
-                self.db = Server()
-                self.header.conn_state.setIcon(QIcon(QPixmap(
-                    'System Files/good_connection.png')))
-                self.tabWidget.setDisabled(False)
-                self.connect_widgets_updates()
-                self.country_cb_1.addItems(self.db.make_request(f"get_countries", self))
-                self.good_conn = True
-            except ServerUnreachableException:
-                self.disable_window()
 
     def setup_widgets(self):
         self.changing = True
@@ -293,7 +285,18 @@ class AuthDialog(Window, Ui_Dialog):
         self.password_le_1.setText(text)
         self.password_le_2.setText(text)
 
+    def connected(self):
+        self.connectThread.quit()
+        self.db = self.connectThread.db
+        self.header.conn_state.setIcon(QIcon(QPixmap(
+            'System Files/good_connection.png')))
+        self.tabWidget.setDisabled(False)
+        self.connect_widgets_updates()
+        self.country_cb_1.addItems(self.db.make_request(f"get_countries", self))
+        self.good_conn = True
+
     def disable_window(self):
+        self.connectThread.quit()
         self.header.conn_state.setIcon(QIcon(QPixmap('System Files/no_connection.png')))
         self.good_conn = False
         self.tabWidget.setDisabled(True)
