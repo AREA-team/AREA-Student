@@ -173,36 +173,36 @@ class Ui_MainWindow(object):
 "}")
         self.add_task_btn.setObjectName("add_task_btn")
         self.horizontalLayout.addWidget(self.add_task_btn)
-        self.add_task_btn_2 = QtWidgets.QPushButton(MainWindow)
+        self.change_task_btn = QtWidgets.QPushButton(MainWindow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.add_task_btn_2.sizePolicy().hasHeightForWidth())
-        self.add_task_btn_2.setSizePolicy(sizePolicy)
-        self.add_task_btn_2.setMinimumSize(QtCore.QSize(181, 50))
-        self.add_task_btn_2.setStyleSheet("QPushButton {\n"
+        sizePolicy.setHeightForWidth(self.change_task_btn.sizePolicy().hasHeightForWidth())
+        self.change_task_btn.setSizePolicy(sizePolicy)
+        self.change_task_btn.setMinimumSize(QtCore.QSize(181, 50))
+        self.change_task_btn.setStyleSheet("QPushButton {\n"
 "font: 57 14pt \"IBM Plex Sans\";\n"
 "background-color: rgb(61, 79, 69);\n"
 "color: rgb(254, 254, 254);\n"
 "border-radius: 20px;\n"
 "}")
-        self.add_task_btn_2.setObjectName("add_task_btn_2")
-        self.horizontalLayout.addWidget(self.add_task_btn_2)
-        self.give_task_btn = QtWidgets.QPushButton(MainWindow)
+        self.change_task_btn.setObjectName("change_task_btn")
+        self.horizontalLayout.addWidget(self.change_task_btn)
+        self.submit_task_btn = QtWidgets.QPushButton(MainWindow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.give_task_btn.sizePolicy().hasHeightForWidth())
-        self.give_task_btn.setSizePolicy(sizePolicy)
-        self.give_task_btn.setMinimumSize(QtCore.QSize(151, 50))
-        self.give_task_btn.setStyleSheet("QPushButton {\n"
+        sizePolicy.setHeightForWidth(self.submit_task_btn.sizePolicy().hasHeightForWidth())
+        self.submit_task_btn.setSizePolicy(sizePolicy)
+        self.submit_task_btn.setMinimumSize(QtCore.QSize(151, 50))
+        self.submit_task_btn.setStyleSheet("QPushButton {\n"
 "background-color: rgb(71, 118, 93);\n"
 "color: rgb(254, 254, 254);\n"
 "border-radius: 20px;\n"
 "font: 57 14pt \"IBM Plex Sans\";\n"
 "}")
-        self.give_task_btn.setObjectName("give_task_btn")
-        self.horizontalLayout.addWidget(self.give_task_btn)
+        self.submit_task_btn.setObjectName("submit_task_btn")
+        self.horizontalLayout.addWidget(self.submit_task_btn)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout.addLayout(self.verticalLayout_2)
 
@@ -215,6 +215,6 @@ class Ui_MainWindow(object):
         self.quit_btn.setText(_translate("MainWindow", "Выйти"))
         self.tasks_label_2.setText(_translate("MainWindow", "Задания"))
         self.add_task_btn.setText(_translate("MainWindow", "Добавить задание"))
-        self.add_task_btn_2.setText(_translate("MainWindow", "Изменить задание"))
-        self.give_task_btn.setText(_translate("MainWindow", "Сдать задание"))
+        self.change_task_btn.setText(_translate("MainWindow", "Изменить задание"))
+        self.submit_task_btn.setText(_translate("MainWindow", "Сдать задание"))
 from redefined_widgets import Calendar, TitleBar

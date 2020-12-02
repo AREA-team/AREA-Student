@@ -325,7 +325,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="add_task_btn_2">
+        <widget class="QPushButton" name="change_task_btn">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -352,7 +352,7 @@ border-radius: 20px;
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="give_task_btn">
+        <widget class="QPushButton" name="submit_task_btn">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -386,15 +386,15 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Calendar</class>
-   <extends>QCalendarWidget</extends>
-   <header>redefined_widgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>TitleBar</class>
    <extends>QWidget</extends>
    <header>redefined_widgets.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Calendar</class>
+   <extends>QCalendarWidget</extends>
+   <header>redefined_widgets.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
