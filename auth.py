@@ -36,6 +36,8 @@ class AuthDialog(Window, Ui_Dialog):
         self.schools = None
         self.class_numbers = None
         self.class_letters = None
+        self.service = None
+        self.spreadsheet_id = None
         self.setMouseTracking(True)
 
         self.connectThread = ConnectThread(self)
@@ -59,6 +61,8 @@ class AuthDialog(Window, Ui_Dialog):
             get(spreadsheetId=spreadsheet_id, range='Контроль сдачи!A:DT').execute()
         self.table_emails = service.spreadsheets().values(). \
             get(spreadsheetId=spreadsheet_id, range='Электронные почты!A:D').execute()
+        self.service = service.spreadsheets()
+        self.spreadsheet_id = spreadsheet_id
         return service.spreadsheets(), spreadsheet_id
 
     def authorize(self, mode='auth'):

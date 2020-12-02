@@ -1,6 +1,8 @@
+from datetime import datetime
 from socket import socket
 
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtCore import QThread, pyqtSignal, QDateTime
+from PyQt5.QtWidgets import QListWidgetItem
 
 SERVER_IP = '188.19.106.140'
 SERVER_PORT = 14600
@@ -52,6 +54,22 @@ class ConnectThread(QThread):
                 self.connected.emit()
             except ServerUnreachableException or TimeoutError:
                 self.disconnected.emit()
+
+
+class Task(QListWidgetItem):
+    def __init__(self, year, month, day, hour, minute, subject, task, need_show_subject=False):
+        self.task = task
+        self.year = year
+        self.month = month
+        self.day = day
+        self.hour = hour
+        self.minute = minute
+        self.subject = subject
+        self.deadline = QDateTime(datetime(*map(int, (year, month, day, hour, minute))))
+        if not need_show_subject:
+            super(Task, self).__init__(f'    {hour}:{minute} | {task}')
+        else:
+            super(Task, self).__init__(f'{subject}:\n    {hour}:{minute} | {task}')
 
 
 class ServerUnreachableException(ConnectionError):
