@@ -107,8 +107,8 @@ class AuthDialog(Window, Ui_Dialog):
                     if normal_password == ' ':
                         raise UserNotRegisteredException
                     elif password == normal_password:
-                        f = open('System Files/cookie.txt', 'w')
-                        f.write('\n'.join([email, password, *self.personal_data, school]))
+                        f = open('System Files/cookie.txt', 'w', encoding='utf-8')
+                        f.write(('\n'.join([email, password, *self.personal_data, school])))
                         return True
                     raise BadPasswordException
             raise UserNotRegisteredException
@@ -136,7 +136,7 @@ class AuthDialog(Window, Ui_Dialog):
                                                            }).execute()
                     if self.db.make_request(f'add_email~{email}~{password}', self)[0] == \
                             'Successful':
-                        f = open('System Files/cookie.txt', 'w')
+                        f = open('System Files/cookie.txt', 'w', encoding='utf-8')
                         f.write('\n'.join([email, password, *self.personal_data, school]))
                         return True
                     raise UserRegisteredException
