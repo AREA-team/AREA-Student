@@ -20,7 +20,12 @@ class TaskDialog(Window, Ui_Dialog):
         self.service = service
         self.task = task
         self.good_conn = False
+
         self.header.setHeight(30)
+        self.header.update_tables.setVisible(False)
+        self.header.update_tables.setDisabled(True)
+        self.header.setObjectName('')
+
         self.connectThread = ConnectThread(self)
         self.connectThread.start()
         self.header.conn_state.clicked.connect(self.connectThread.start)

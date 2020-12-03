@@ -8,7 +8,6 @@ if __name__ == '__main__':
     need_auth = True
     while need_auth:
         auth = AuthDialog()
-        auth.show()
         auth.exec()
         need_auth = False
         if auth.authorized:

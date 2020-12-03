@@ -40,6 +40,9 @@ class AuthDialog(Window, Ui_Dialog):
         self.spreadsheet_id = None
         self.setMouseTracking(True)
 
+        self.header.update_tables.setVisible(False)
+        self.header.update_tables.setDisabled(True)
+        self.header.setObjectName('')
         self.connectThread = ConnectThread(self)
         self.connectThread.start()
         self.header.conn_state.clicked.connect(self.connectThread.start)
@@ -47,6 +50,27 @@ class AuthDialog(Window, Ui_Dialog):
         self.connectThread.disconnected.connect(self.disable_window)
         self.sign_in_btn.clicked.connect(self.sign_in)
         self.sign_up_btn.clicked.connect(self.sign_up)
+
+    def check_cookie(self):
+        lines = list(map(lambda x: x.strip(), open('System Files/cookie.txt').readlines()))
+        if len(lines) == 7:
+            email, cookie, first_name, last_name, class_number, class_letter, school = lines
+            password = self.db.make_request(f'get_password~{email}', self)[0]
+            if hash(password) == hash(cookie):
+                self.authorized = True
+                self.personal_data = first_name, last_name, class_number, class_letter
+                credentials_file = 'System Files/homework-spreadsheet-d24c606fd7ba.json'
+                credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_file, [
+                    'https://www.googleapis.com/auth/spreadsheets',
+                    'https://www.googleapis.com/auth/drive'])
+                http_auth = credentials.authorize(httplib2.Http())
+                self.service = googleapiclient.discovery.build('sheets', 'v4', http=http_auth)
+                self.spreadsheet_id = self.db.make_request(
+                    f"get_class_journal_link~{school}~{class_number}~{class_letter}", self)[0]
+                self.table_tasks = self.service.spreadsheets().values(). \
+                    get(spreadsheetId=self.spreadsheet_id, range='Контроль сдачи!A:DT').execute()
+                self.close()
+                return True
 
     def get_tables(self, school, class_number, class_letter):
         credentials_file = 'System Files/homework-spreadsheet-d24c606fd7ba.json'
@@ -78,7 +102,12 @@ class AuthDialog(Window, Ui_Dialog):
             for index, first_name_val, last_name_val, *email_val in self.table_emails['values']:
                 if first_name_val == first_name and last_name_val == last_name and email_val:
                     email = email_val[0]
-                    if password == self.db.make_request(f'get_password~{email}', self)[0]:
+                    normal_password = self.db.make_request(f'get_password~{email}', self)[0]
+                    if normal_password == ' ':
+                        raise UserNotRegisteredException
+                    elif password == normal_password:
+                        f = open('System Files/cookie.txt', 'w')
+                        f.write('\n'.join([email, password, *self.personal_data, school]))
                         return True
                     raise BadPasswordException
             raise UserNotRegisteredException
@@ -93,7 +122,7 @@ class AuthDialog(Window, Ui_Dialog):
             self.personal_data = first_name, last_name, class_number, class_letter
             table_email, spreadsheet_id = self.get_tables(school, class_number, class_letter)
             for index, first_name_val, last_name_val, *email_val in self.table_emails['values']:
-                if first_name_val == first_name and last_name_val == last_name and not email_val:
+                if first_name_val == first_name and last_name_val == last_name:
                     table_email.values().batchUpdate(spreadsheetId=spreadsheet_id,
                                                      body={"valueInputOption": "USER_ENTERED",
                                                            "data": [
@@ -106,6 +135,8 @@ class AuthDialog(Window, Ui_Dialog):
                                                            }).execute()
                     if self.db.make_request(f'add_email~{email}~{password}', self)[0] == \
                             'Successful':
+                        f = open('System Files/cookie.txt', 'w')
+                        f.write('\n'.join([email, password, *self.personal_data, school]))
                         return True
                     raise UserRegisteredException
                 elif first_name_val == first_name and last_name_val == last_name and email_val:
@@ -131,7 +162,6 @@ class AuthDialog(Window, Ui_Dialog):
             try:
                 if self.authorize():
                     self.authorized = True
-                    self.db = None
                     self.close()
             except UserNotRegisteredException:
                 self.state_label1.setText('Вы не зарегистрированы')
@@ -292,12 +322,13 @@ class AuthDialog(Window, Ui_Dialog):
     def connected(self):
         self.connectThread.quit()
         self.db = self.connectThread.db
-        self.header.conn_state.setIcon(QIcon(QPixmap(
-            'System Files/good_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
         self.tabWidget.setDisabled(False)
         self.connect_widgets_updates()
         self.country_cb_1.addItems(self.db.make_request(f"get_countries", self))
         self.good_conn = True
+        if not self.check_cookie():
+            self.show()
 
     def disable_window(self):
         self.connectThread.quit()
@@ -305,6 +336,8 @@ class AuthDialog(Window, Ui_Dialog):
         self.good_conn = False
         self.tabWidget.setDisabled(True)
         self.header.setEnabled(True)
+        if not self.check_cookie():
+            self.show()
 
 
 if __name__ == '__main__':

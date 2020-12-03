@@ -26,6 +26,7 @@ class MainWindow(Window, Ui_MainWindow):
                                 f'{self.class_number + self.class_letter}')
         self.header.setHeight(30)
         self.logo_label.setPixmap(QPixmap('System Files/Logo.png'))
+        self.header.update_tables.setIcon(QIcon('System Files/update_icon.png'))
         self.add_task_btn.setIcon(QIcon('System Files/add_icon.png'))
         self.change_task_btn.setIcon(QIcon('System Files/change_icon.png'))
         self.submit_task_btn.setIcon(QIcon('System Files/submit_icon.png'))
@@ -33,6 +34,8 @@ class MainWindow(Window, Ui_MainWindow):
 
         self.connectThread = ConnectThread(self)
         self.connectThread.start()
+
+        self.header.update_tables.clicked.connect(self.update_tables)
         self.header.conn_state.clicked.connect(self.connectThread.start)
         self.connectThread.connected.connect(self.connected)
         self.connectThread.disconnected.connect(self.disable_window)
@@ -44,6 +47,12 @@ class MainWindow(Window, Ui_MainWindow):
         self.change_task_btn.clicked.connect(self.change_task)
         self.submit_task_btn.clicked.connect(self.submit_task)
 
+    def update_tables(self):
+        self.task_table = self.service.values().get(spreadsheetId=self.spreadsheet_id,
+                                                    range='Контроль сдачи!A:DT').execute()
+        self.parse_task_table()
+        self.update_calendar()
+
     def add_task(self):
         task = self.tasks_list.selectedItems()[0] if self.tasks_list.selectedItems() else None
         tw = TaskDialog(mode='add',
@@ -54,10 +63,7 @@ class MainWindow(Window, Ui_MainWindow):
                         )
         tw.show()
         tw.exec()
-        self.task_table = self.service.values().get(spreadsheetId=self.spreadsheet_id,
-                                                    range='Контроль сдачи!A:DT').execute()
-        self.parse_task_table()
-        self.update_calendar()
+        self.update_tables()
 
     def change_task(self):
         if self.tasks_list.selectedItems():
@@ -70,10 +76,7 @@ class MainWindow(Window, Ui_MainWindow):
                             )
             tw.show()
             tw.exec()
-            self.task_table = self.service.values().get(spreadsheetId=self.spreadsheet_id,
-                                                        range='Контроль сдачи!A:DT').execute()
-            self.parse_task_table()
-            self.update_calendar()
+            self.update_tables()
 
     def submit_task(self):
         if self.tasks_list.selectedItems():
@@ -85,10 +88,7 @@ class MainWindow(Window, Ui_MainWindow):
                             )
             tw.show()
             tw.exec()
-            self.task_table = self.service.values().get(spreadsheetId=self.spreadsheet_id,
-                                                        range='Контроль сдачи!A:DT').execute()
-            self.parse_task_table()
-            self.update_calendar()
+            self.update_tables()
 
     def parse_task_table(self):
         self.subjects = self.task_table['values'][0][3:]
@@ -124,11 +124,14 @@ class MainWindow(Window, Ui_MainWindow):
 
     def exit(self):
         self.need_auth = True
+        f = open('System Files/cookie.txt', 'w')
+        f.close()
         self.close()
 
     def disable_window(self):
         self.connectThread.quit()
         self.header.conn_state.setIcon(QIcon(QPixmap('System Files/no_connection.png')))
+        self.header.update_tables.setDisabled(True)
         self.good_conn = False
         self.verticalLayout_2.setEnabled(False)
         self.header.setEnabled(True)
@@ -137,5 +140,6 @@ class MainWindow(Window, Ui_MainWindow):
         self.connectThread.quit()
         self.db = self.connectThread.db
         self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
+        self.header.update_tables.setDisabled(False)
         self.setEnabled(True)
         self.good_conn = True

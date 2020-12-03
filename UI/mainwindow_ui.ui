@@ -31,13 +31,13 @@ TitleBar {
 	background-color: rgb(32, 178, 170);
 }
 /* Минимизировать кнопку `Максимальное выключение` Общий фон по умолчанию */
-#buttonMinimum, #buttonMaximum, #buttonClose, #buttonConnect {
+#buttonMinimum, #buttonMaximum, #buttonClose, #buttonConnect, #updateTables {
     border: none;
 	background-color: rgb(32, 178, 170);
 	color: white;
 }
 /* Зависание */
-#buttonMinimum:hover,#buttonMaximum:hover, #buttonConnect:hover {
+#buttonMinimum:hover,#buttonMaximum:hover, #buttonConnect:hover, #updateTables:hover {
     color: rgb(32, 178, 170);
 	background-color: rgb(41, 229, 217);
 }

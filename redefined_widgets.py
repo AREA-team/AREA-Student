@@ -58,7 +58,9 @@ class TitleBar(QWidget):
         self.layout_custom_widget.setContentsMargins(0, 0, 0, 0)
 
         self.conn_state = QPushButton(objectName='buttonConnect')
+        self.update_tables = QPushButton(objectName='updateTables')
 
+        layout.addWidget(self.update_tables)
         layout.addWidget(self.conn_state)
         layout.addWidget(self.buttonMinimum)
         layout.addWidget(self.buttonMaximum)
@@ -93,7 +95,7 @@ class TitleBar(QWidget):
         self.titleLabel.setText(title)
 
     def setIcon(self, icon):
-        """ настройки значокa """
+        """ настройки значкa """
         self.iconLabel.setPixmap(icon.pixmap(self.iconSize, self.iconSize))
 
     def setIconSize(self, size):
@@ -148,6 +150,7 @@ class Window(QDialog):
         self._direction = None
         self._widget = None
         self.header.conn_state.setIconSize(QSize(30, 30))
+        self.header.update_tables.setIconSize(QSize(30, 30))
 
         self.setWindowFlags(Qt.FramelessWindowHint)
 
