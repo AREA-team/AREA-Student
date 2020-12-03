@@ -52,7 +52,8 @@ class AuthDialog(Window, Ui_Dialog):
         self.sign_up_btn.clicked.connect(self.sign_up)
 
     def check_cookie(self):
-        lines = list(map(lambda x: x.strip(), open('System Files/cookie.txt').readlines()))
+        lines = list(map(lambda x: x.strip(), open('System Files/cookie.txt',
+                                                   encoding='utf-8').readlines()))
         if len(lines) == 7:
             email, cookie, first_name, last_name, class_number, class_letter, school = lines
             password = self.db.make_request(f'get_password~{email}', self)[0]
@@ -107,8 +108,8 @@ class AuthDialog(Window, Ui_Dialog):
                     if normal_password == ' ':
                         raise UserNotRegisteredException
                     elif password == normal_password:
-                        f = open('System Files/cookie.txt', 'w')
-                        f.write('\n'.join([email, password, *self.personal_data, school]))
+                        f = open('System Files/cookie.txt', 'w', encoding='utf-8')
+                        f.write(('\n'.join([email, password, *self.personal_data, school])))
                         return True
                     raise BadPasswordException
             raise UserNotRegisteredException
@@ -136,7 +137,7 @@ class AuthDialog(Window, Ui_Dialog):
                                                            }).execute()
                     if self.db.make_request(f'add_email~{email}~{password}', self)[0] == \
                             'Successful':
-                        f = open('System Files/cookie.txt', 'w')
+                        f = open('System Files/cookie.txt', 'w', encoding='utf-8')
                         f.write('\n'.join([email, password, *self.personal_data, school]))
                         return True
                     raise UserRegisteredException
