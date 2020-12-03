@@ -64,10 +64,11 @@ class AuthDialog(Window, Ui_Dialog):
                     'https://www.googleapis.com/auth/spreadsheets',
                     'https://www.googleapis.com/auth/drive'])
                 http_auth = credentials.authorize(httplib2.Http())
-                self.service = googleapiclient.discovery.build('sheets', 'v4', http=http_auth)
+                self.service = googleapiclient.discovery.build('sheets', 'v4',
+                                                               http=http_auth).spreadsheets()
                 self.spreadsheet_id = self.db.make_request(
                     f"get_class_journal_link~{school}~{class_number}~{class_letter}", self)[0]
-                self.table_tasks = self.service.spreadsheets().values(). \
+                self.table_tasks = self.service.values(). \
                     get(spreadsheetId=self.spreadsheet_id, range='Контроль сдачи!A:DT').execute()
                 self.close()
                 return True
