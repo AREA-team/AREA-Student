@@ -1,4 +1,5 @@
 import sys
+import webbrowser
 
 from PyQt5.QtCore import QDateTime
 from PyQt5.QtGui import QIcon, QPixmap
@@ -6,7 +7,6 @@ from PyQt5.QtWidgets import QApplication
 from redefined_widgets import Window
 from UI.task_dialog_ui import Ui_Dialog
 from tools import ConnectThread
-from datetime import datetime
 
 
 class TaskDialog(Window, Ui_Dialog):
@@ -27,27 +27,135 @@ class TaskDialog(Window, Ui_Dialog):
         self.connectThread.connected.connect(self.connected)
         self.connectThread.disconnected.connect(self.disable_window)
         self.cancel_btn.clicked.connect(self.close)
+        self.open_link_btn.clicked.connect(self.open_link)
         if mode == 'submit':
             self.submit_mode()
             self.ok_btn.clicked.connect(self.submit_task)
         elif mode == 'change':
-            pass
+            self.change_mode()
+            self.ok_btn.clicked.connect(self.change_task)
         elif mode == 'add':
-            pass
+            self.add_mode()
+            self.ok_btn.clicked.connect(self.add_task)
+
+    def add_mode(self):
+        self.formLayout.removeRow(4)
+        subjects = sorted(set(filter(lambda x: x not in ['ФИО', '', 'Сделано / Не сделано / Всего'],
+                                     self.task_table['values'][0])))
+        self.subjects_cb.addItems(subjects)
+        if not self.task:
+            self.deadline_time.setDateTime(QDateTime().currentDateTime())
+        else:
+            self.deadline_time.setDateTime(self.task.deadline)
+
+    def add_task(self):
+        subject = self.subjects_cb.currentText()
+        subjects = self.task_table['values'][0]
+        index = subjects.index(subject) + 1
+        while not subjects[index]:
+            index += 1
+        self.service.batchUpdate(spreadsheetId=self.spreadsheet_id,
+                                 body={"requests": [
+                                     {
+                                         "insertDimension": {
+                                             "range": {
+                                                 "dimension": "COLUMNS",
+                                                 "startIndex": index,
+                                                 "endIndex": index + 1
+                                             },
+                                             "inheritFromBefore": True
+                                         }
+                                     }]}).execute()
+        self.task_index = index
+        self.change_task()
+
+    def open_link(self):
+        link = self.link_le.text()
+        if link:
+            if link.startswith('http://') or link.startswith('https://'):
+                webbrowser.open(link)
+            else:
+                webbrowser.open('https://' + link)
+
+    def change_mode(self):
+        self.subjects_cb.addItem(self.task.subject)
+        self.task_tb.setPlainText(self.task.task)
+        self.deadline_time.setDateTime(self.task.deadline)
+        self.formLayout.removeRow(4)
+        self.task_index = self.task_table['values'][0].index(self.task.subject)
+        self.task_index += self.task_table['values'][2][self.task_index:].index(self.task.task)
+        self.task_index += self.task_table['values'][3][self.task_index:].index(
+            f"{self.task.deadline.toPyDateTime().strftime('%d.%m %H:%M')}")
+        task_letter = self.get_task_letter(self.task_index)
+        link = self.service.get(
+            spreadsheetId=self.spreadsheet_id,
+            ranges='Контроль сдачи!' + task_letter + '3',
+            fields="sheets/data/rowData/values/hyperlink"
+        ).execute()['sheets'][0]['data'][0]
+        link = self.service.get(
+            spreadsheetId=self.spreadsheet_id,
+            ranges='Контроль сдачи!' + task_letter + '3',
+            fields="sheets/data/rowData/values/hyperlink"
+        ).execute()['sheets'][0]['data'][0]['rowData'][0]['values'][0]['hyperlink'] if link else ''
+        self.link_le.setText(link)
+
+    def change_task(self):
+        task_letter = self.get_task_letter(self.task_index)
+        if self.link_le.text():
+            self.service.values().batchUpdate(spreadsheetId=self.spreadsheet_id,
+                                              body={
+                                                  "valueInputOption": "USER_ENTERED",
+                                                  "data": [
+                                                      {"range": 'Контроль сдачи!' + task_letter +
+                                                                '3' + ':' + task_letter + '4',
+                                                       "majorDimension": "COLUMNS",
+                                                       "values": [
+                                                           [f'=ГИПЕРССЫЛКА("{self.link_le.text()}'
+                                                            f'";"{self.task_tb.toPlainText()}")',
+                                                            self.deadline_time.dateTime(
+                                                            ).toPyDateTime().strftime(
+                                                                '%d.%m %H:%M')]]}]}).execute()
+        else:
+            self.service.values().batchUpdate(spreadsheetId=self.spreadsheet_id,
+                                              body={
+                                                  "valueInputOption": "USER_ENTERED",
+                                                  "data": [
+                                                      {"range": 'Контроль сдачи!' + task_letter +
+                                                                '3' + ':' + task_letter + '4',
+                                                       "majorDimension": "COLUMNS",
+                                                       "values": [
+                                                           [self.task_tb.toPlainText(),
+                                                            self.deadline_time.dateTime(
+                                                            ).toPyDateTime().strftime(
+                                                                '%d.%m %H:%M')]]}]}).execute()
+        self.close()
 
     def submit_mode(self):
         self.subjects_cb.addItem(self.task.subject)
         self.task_tb.setPlainText(self.task.task)
         self.task_tb.setReadOnly(True)
+        self.link_le.setReadOnly(True)
         self.deadline_time.setDateTime(self.task.deadline)
         self.deadline_time.setReadOnly(True)
-        self.delivery_time.setDateTime(QDateTime(datetime.now()))
-
-    def submit_task(self):
+        self.delivery_time.setDateTime(QDateTime().currentDateTime())
         self.task_index = self.task_table['values'][0].index(self.task.subject)
         self.task_index += self.task_table['values'][2][self.task_index:].index(self.task.task)
         self.task_index += self.task_table['values'][3][self.task_index:].index(
             f"{self.task.deadline.toPyDateTime().strftime('%d.%m %H:%M')}")
+        task_letter = self.get_task_letter(self.task_index)
+        link = self.service.get(
+            spreadsheetId=self.spreadsheet_id,
+            ranges='Контроль сдачи!' + task_letter + '3',
+            fields="sheets/data/rowData/values/hyperlink"
+        ).execute()['sheets'][0]['data'][0]
+        link = self.service.get(
+            spreadsheetId=self.spreadsheet_id,
+            ranges='Контроль сдачи!' + task_letter + '3',
+            fields="sheets/data/rowData/values/hyperlink"
+        ).execute()['sheets'][0]['data'][0]['rowData'][0]['values'][0]['hyperlink'] if link else ''
+        self.link_le.setText(link)
+
+    def submit_task(self):
         task_letter = self.get_task_letter(self.task_index)
         self.service.values().batchUpdate(spreadsheetId=self.spreadsheet_id,
                                           body={

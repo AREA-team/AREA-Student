@@ -109,7 +109,7 @@ class Ui_Dialog(object):
 "font: 57 10pt \"IBM Plex Sans\";\n"
 "}")
         self.deadline_label.setObjectName("deadline_label")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.deadline_label)
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.deadline_label)
         self.deadline_time = QtWidgets.QDateTimeEdit(Dialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -119,13 +119,13 @@ class Ui_Dialog(object):
         self.deadline_time.setCurrentSection(QtWidgets.QDateTimeEdit.DaySection)
         self.deadline_time.setCalendarPopup(True)
         self.deadline_time.setObjectName("deadline_time")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.deadline_time)
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.deadline_time)
         self.delivery_label = QtWidgets.QLabel(Dialog)
         self.delivery_label.setStyleSheet("QLabel{\n"
 "font: 57 10pt \"IBM Plex Sans\";\n"
 "}")
         self.delivery_label.setObjectName("delivery_label")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.delivery_label)
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.delivery_label)
         self.delivery_time = QtWidgets.QDateTimeEdit(Dialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -134,7 +134,17 @@ class Ui_Dialog(object):
         self.delivery_time.setSizePolicy(sizePolicy)
         self.delivery_time.setCalendarPopup(True)
         self.delivery_time.setObjectName("delivery_time")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.delivery_time)
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.delivery_time)
+        self.link_label = QtWidgets.QLabel(Dialog)
+        self.link_label.setStyleSheet("QLabel{\n"
+"font: 57 10pt \"IBM Plex Sans\";\n"
+"}")
+        self.link_label.setObjectName("link_label")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.link_label)
+        self.link_le = QtWidgets.QLineEdit(Dialog)
+        self.link_le.setInputMethodHints(QtCore.Qt.ImhUrlCharactersOnly)
+        self.link_le.setObjectName("link_le")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.link_le)
         self.verticalLayout.addLayout(self.formLayout)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -154,6 +164,22 @@ class Ui_Dialog(object):
 "}")
         self.ok_btn.setObjectName("ok_btn")
         self.horizontalLayout.addWidget(self.ok_btn)
+        self.open_link_btn = QtWidgets.QPushButton(Dialog)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.open_link_btn.sizePolicy().hasHeightForWidth())
+        self.open_link_btn.setSizePolicy(sizePolicy)
+        self.open_link_btn.setMinimumSize(QtCore.QSize(161, 41))
+        self.open_link_btn.setMaximumSize(QtCore.QSize(201, 41))
+        self.open_link_btn.setStyleSheet("QPushButton {\n"
+"font: 57 14pt \"IBM Plex Sans\";\n"
+"background-color: rgb(61, 79, 69);\n"
+"color: rgb(254, 254, 254);\n"
+"border-radius: 20px;\n"
+"}")
+        self.open_link_btn.setObjectName("open_link_btn")
+        self.horizontalLayout.addWidget(self.open_link_btn)
         self.cancel_btn = QtWidgets.QPushButton(Dialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -190,6 +216,8 @@ class Ui_Dialog(object):
         self.deadline_time.setDisplayFormat(_translate("Dialog", "dd.MM HH:mm"))
         self.delivery_label.setText(_translate("Dialog", "Дата сдачи"))
         self.delivery_time.setDisplayFormat(_translate("Dialog", "dd.MM HH:mm"))
+        self.link_label.setText(_translate("Dialog", "Ссылка"))
         self.ok_btn.setText(_translate("Dialog", "Готово"))
+        self.open_link_btn.setText(_translate("Dialog", "Открыть ссылку"))
         self.cancel_btn.setText(_translate("Dialog", "Отмена"))
 from redefined_widgets import TitleBar

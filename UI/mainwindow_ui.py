@@ -128,6 +128,8 @@ class Ui_MainWindow(object):
 "background-color: rgb(60, 78, 68);\n"
 "border-radius: 20px;\n"
 "}")
+        self.quit_btn.setIconSize(QtCore.QSize(30, 30))
+        self.quit_btn.setAutoRepeatDelay(299)
         self.quit_btn.setObjectName("quit_btn")
         self.horizontalLayout_2.addWidget(self.quit_btn)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -171,6 +173,7 @@ class Ui_MainWindow(object):
 "border-radius: 20px;\n"
 "font: 57 14pt \"IBM Plex Sans\";\n"
 "}")
+        self.add_task_btn.setIconSize(QtCore.QSize(30, 30))
         self.add_task_btn.setObjectName("add_task_btn")
         self.horizontalLayout.addWidget(self.add_task_btn)
         self.change_task_btn = QtWidgets.QPushButton(MainWindow)
@@ -186,6 +189,7 @@ class Ui_MainWindow(object):
 "color: rgb(254, 254, 254);\n"
 "border-radius: 20px;\n"
 "}")
+        self.change_task_btn.setIconSize(QtCore.QSize(30, 30))
         self.change_task_btn.setObjectName("change_task_btn")
         self.horizontalLayout.addWidget(self.change_task_btn)
         self.submit_task_btn = QtWidgets.QPushButton(MainWindow)
@@ -201,6 +205,8 @@ class Ui_MainWindow(object):
 "border-radius: 20px;\n"
 "font: 57 14pt \"IBM Plex Sans\";\n"
 "}")
+        self.submit_task_btn.setIconSize(QtCore.QSize(30, 30))
+        self.submit_task_btn.setAutoRepeat(False)
         self.submit_task_btn.setObjectName("submit_task_btn")
         self.horizontalLayout.addWidget(self.submit_task_btn)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
@@ -214,7 +220,7 @@ class Ui_MainWindow(object):
         self.main_label_2.setText(_translate("MainWindow", "AREA"))
         self.quit_btn.setText(_translate("MainWindow", "Выйти"))
         self.tasks_label_2.setText(_translate("MainWindow", "Задания"))
-        self.add_task_btn.setText(_translate("MainWindow", "Добавить задание"))
-        self.change_task_btn.setText(_translate("MainWindow", "Изменить задание"))
-        self.submit_task_btn.setText(_translate("MainWindow", "Сдать задание"))
+        self.add_task_btn.setText(_translate("MainWindow", "Добавить"))
+        self.change_task_btn.setText(_translate("MainWindow", "Изменить"))
+        self.submit_task_btn.setText(_translate("MainWindow", "Сдать"))
 from redefined_widgets import Calendar, TitleBar

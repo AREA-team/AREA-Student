@@ -245,6 +245,15 @@ border-radius: 20px;
          <property name="text">
           <string>Выйти</string>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="autoRepeatDelay">
+          <number>299</number>
+         </property>
         </widget>
        </item>
       </layout>
@@ -320,7 +329,13 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
 }</string>
          </property>
          <property name="text">
-          <string>Добавить задание</string>
+          <string>Добавить</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -347,7 +362,13 @@ border-radius: 20px;
 }</string>
          </property>
          <property name="text">
-          <string>Изменить задание</string>
+          <string>Изменить</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -374,7 +395,16 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
 }</string>
          </property>
          <property name="text">
-          <string>Сдать задание</string>
+          <string>Сдать</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="autoRepeat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>

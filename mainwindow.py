@@ -26,6 +26,10 @@ class MainWindow(Window, Ui_MainWindow):
                                 f'{self.class_number + self.class_letter}')
         self.header.setHeight(30)
         self.logo_label.setPixmap(QPixmap('System Files/Logo.png'))
+        self.add_task_btn.setIcon(QIcon('System Files/add_icon.png'))
+        self.change_task_btn.setIcon(QIcon('System Files/change_icon.png'))
+        self.submit_task_btn.setIcon(QIcon('System Files/submit_icon.png'))
+        self.quit_btn.setIcon(QIcon('System Files/exit_icon.png'))
 
         self.connectThread = ConnectThread(self)
         self.connectThread.start()
@@ -41,21 +45,35 @@ class MainWindow(Window, Ui_MainWindow):
         self.submit_task_btn.clicked.connect(self.submit_task)
 
     def add_task(self):
-        self.service.batchUpdate(spreadsheetId=self.spreadsheet_id,
-                                 body={"requests": [
-                                     {
-                                         "insertDimension": {
-                                             "range": {
-                                                 "dimension": "COLUMNS",
-                                                 "startIndex": 2,
-                                                 "endIndex": 4
-                                             },
-                                             "inheritFromBefore": True
-                                         }
-                                     }]}).execute()
+        task = self.tasks_list.selectedItems()[0] if self.tasks_list.selectedItems() else None
+        tw = TaskDialog(mode='add',
+                        task=task,
+                        service=self.service,
+                        task_table=self.task_table,
+                        spreadsheet_id=self.spreadsheet_id
+                        )
+        tw.show()
+        tw.exec()
+        self.task_table = self.service.values().get(spreadsheetId=self.spreadsheet_id,
+                                                    range='Контроль сдачи!A:DT').execute()
+        self.parse_task_table()
+        self.update_calendar()
 
     def change_task(self):
-        pass
+        if self.tasks_list.selectedItems():
+            tw = TaskDialog(mode='change',
+                            task=self.tasks_list.selectedItems()[0],
+                            service=self.service,
+                            task_table=self.task_table,
+                            student_index=self.index,
+                            spreadsheet_id=self.spreadsheet_id
+                            )
+            tw.show()
+            tw.exec()
+            self.task_table = self.service.values().get(spreadsheetId=self.spreadsheet_id,
+                                                        range='Контроль сдачи!A:DT').execute()
+            self.parse_task_table()
+            self.update_calendar()
 
     def submit_task(self):
         if self.tasks_list.selectedItems():

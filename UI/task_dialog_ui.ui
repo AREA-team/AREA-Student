@@ -172,7 +172,7 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="deadline_label">
          <property name="styleSheet">
           <string notr="true">QLabel{
@@ -184,7 +184,7 @@ font: 57 10pt &quot;IBM Plex Sans&quot;;
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QDateTimeEdit" name="deadline_time">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -203,7 +203,7 @@ font: 57 10pt &quot;IBM Plex Sans&quot;;
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="delivery_label">
          <property name="styleSheet">
           <string notr="true">QLabel{
@@ -215,7 +215,7 @@ font: 57 10pt &quot;IBM Plex Sans&quot;;
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="QDateTimeEdit" name="delivery_time">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -228,6 +228,25 @@ font: 57 10pt &quot;IBM Plex Sans&quot;;
          </property>
          <property name="calendarPopup">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="link_label">
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+font: 57 10pt &quot;IBM Plex Sans&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string>Ссылка</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="link_le">
+         <property name="inputMethodHints">
+          <set>Qt::ImhUrlCharactersOnly</set>
          </property>
         </widget>
        </item>
@@ -265,6 +284,39 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          </property>
          <property name="text">
           <string>Готово</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="open_link_btn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>161</width>
+           <height>41</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>201</width>
+           <height>41</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+font: 57 14pt &quot;IBM Plex Sans&quot;;
+background-color: rgb(61, 79, 69);
+color: rgb(254, 254, 254);
+border-radius: 20px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Открыть ссылку</string>
          </property>
         </widget>
        </item>
