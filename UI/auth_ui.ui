@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>AREA - Вход</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../System Files/Logo.ico</normaloff>../System Files/Logo.ico</iconset>
+  </property>
   <property name="toolTip">
    <string notr="true"/>
   </property>

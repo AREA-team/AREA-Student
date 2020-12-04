@@ -1,10 +1,14 @@
+import os
 import sys
+
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
 from auth import AuthDialog
 from mainwindow import MainWindow
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon('System Files\\Logo.ico'))
     need_auth = True
     while need_auth:
         auth = AuthDialog()
@@ -16,4 +20,6 @@ if __name__ == '__main__':
             main.show()
             main.exec()
             need_auth = main.need_auth
+    if os.path.exists('homework-spreadsheet-d24c606fd7ba.json'):
+        os.remove('homework-spreadsheet-d24c606fd7ba.json')
     sys.exit()

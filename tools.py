@@ -18,6 +18,7 @@ class Server:
             raise ServerUnreachableException
         if self.correct_public_key():
             self.send_private_key()
+            self.json_key = self.s.recv(4096).decode('utf-8')
         else:
             raise ServerUnreachableException
 
@@ -36,6 +37,9 @@ class Server:
         except ConnectionError:
             window.disable_window()
             return current_items
+
+    def get_json_key(self):
+        return self.json_key
 
 
 class ConnectThread(QThread):

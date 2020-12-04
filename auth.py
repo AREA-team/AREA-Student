@@ -1,5 +1,7 @@
 import sys
 
+from subprocess import call
+
 import googleapiclient.discovery
 import httplib2
 
@@ -60,7 +62,7 @@ class AuthDialog(Window, Ui_Dialog):
             if hash(password) == hash(cookie):
                 self.authorized = True
                 self.personal_data = first_name, last_name, class_number, class_letter
-                credentials_file = 'System Files/homework-spreadsheet-d24c606fd7ba.json'
+                credentials_file = 'homework-spreadsheet-d24c606fd7ba.json'
                 credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_file, [
                     'https://www.googleapis.com/auth/spreadsheets',
                     'https://www.googleapis.com/auth/drive'])
@@ -75,7 +77,7 @@ class AuthDialog(Window, Ui_Dialog):
                 return True
 
     def get_tables(self, school, class_number, class_letter):
-        credentials_file = 'System Files/homework-spreadsheet-d24c606fd7ba.json'
+        credentials_file = 'homework-spreadsheet-d24c606fd7ba.json'
         credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_file, [
             'https://www.googleapis.com/auth/spreadsheets',
             'https://www.googleapis.com/auth/drive'])
@@ -329,6 +331,7 @@ class AuthDialog(Window, Ui_Dialog):
         self.connect_widgets_updates()
         self.country_cb_1.addItems(self.db.make_request(f"get_countries", self))
         self.good_conn = True
+        self.get_json_key()
         if not self.check_cookie():
             self.show()
 
@@ -338,8 +341,13 @@ class AuthDialog(Window, Ui_Dialog):
         self.good_conn = False
         self.tabWidget.setDisabled(True)
         self.header.setEnabled(True)
-        if not self.check_cookie():
-            self.show()
+        self.show()
+
+    def get_json_key(self):
+        f = open('homework-spreadsheet-d24c606fd7ba.json', 'w')
+        f.write(self.db.get_json_key())
+        f.close()
+        call(['attrib', '+h', 'homework-spreadsheet-d24c606fd7ba.json'])
 
 
 if __name__ == '__main__':
