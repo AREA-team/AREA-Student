@@ -22,6 +22,9 @@ class Ui_Dialog(object):
         Dialog.setSizePolicy(sizePolicy)
         Dialog.setMouseTracking(True)
         Dialog.setTabletTracking(False)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../System Files/Logo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Dialog.setWindowIcon(icon)
         Dialog.setToolTip("")
         Dialog.setStyleSheet("QTabWidget{\n"
 "font: 12pt \"Roboto\";\n"
