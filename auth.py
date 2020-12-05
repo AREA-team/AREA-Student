@@ -328,11 +328,11 @@ class AuthDialog(Window, Ui_Dialog):
         self.db = self.connectThread.db
         self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
         self.tabWidget.setDisabled(False)
-        self.connect_widgets_updates()
-        self.country_cb_1.addItems(self.db.make_request(f"get_countries", self))
         self.good_conn = True
         self.get_json_key()
         if not self.check_cookie():
+            self.connect_widgets_updates()
+            self.country_cb_1.addItems(self.db.make_request(f"get_countries", self))
             self.show()
 
     def disable_window(self):

@@ -178,7 +178,7 @@ class TaskDialog(Window, Ui_Dialog):
     def get_task_letter(task_index):
         task_letter = ''
         alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        for _ in range(task_index // 26 + 1):
+        while task_index >= 0:
             if task_index >= 26:
                 task_letter += alphabet[task_index // 26 - 1]
                 task_index %= 26
