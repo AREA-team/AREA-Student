@@ -13,8 +13,6 @@ def is_admin():
 
 
 if __name__ == '__main__':
-    if os.path.exists('homework-spreadsheet-d24c606fd7ba.json'):
-        os.remove('homework-spreadsheet-d24c606fd7ba.json')
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon('System Files\\Logo.ico'))
     need_auth = True

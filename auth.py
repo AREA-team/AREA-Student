@@ -1,3 +1,4 @@
+import os
 import sys
 
 from subprocess import call
@@ -344,6 +345,8 @@ class AuthDialog(Window, Ui_Dialog):
         self.show()
 
     def get_json_key(self):
+        if os.path.exists('homework-spreadsheet-d24c606fd7ba.json'):
+            os.remove('homework-spreadsheet-d24c606fd7ba.json')
         f = open('homework-spreadsheet-d24c606fd7ba.json', 'w')
         f.write(self.db.get_json_key())
         f.close()
