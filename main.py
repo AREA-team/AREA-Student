@@ -1,4 +1,3 @@
-import ctypes
 import os
 import sys
 
@@ -6,10 +5,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
 from auth import AuthDialog
 from mainwindow import MainWindow
-
-
-def is_admin():
-    return ctypes.windll.shell32.IsUserAnAdmin()
 
 
 if __name__ == '__main__':
