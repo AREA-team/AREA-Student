@@ -209,14 +209,6 @@ class AuthDialog(Window, Ui_Dialog):
             finally:
                 self.state_label2.setStyleSheet(self.bad_stylesheet)
 
-    def setup_widgets(self):
-        self.changing = True
-        self.country_cb_1.clear()
-        self.country_cb_2.clear()
-        self.countries = self.db.make_request(f"get_countries", self, self.countries)
-        self.country_cb_1.addItems(self.countries)
-        self.country_cb_2.addItems(self.countries)
-
     def connect_widgets_updates(self):
         self.country_cb_1.currentTextChanged.connect(self.country_changed)
         self.country_cb_2.currentTextChanged.connect(self.country_changed)
@@ -235,80 +227,76 @@ class AuthDialog(Window, Ui_Dialog):
         self.password_le_1.textChanged.connect(self.password_changed)
         self.password_le_2.textChanged.connect(self.password_changed)
 
-    def country_changed(self, text=False):
-        text = self.sender().currentText() if not text else text
-        if not self.changing and text:
+    def country_changed(self, text='', setup=False):
+        if not self.changing and (text or setup) and not text.startswith('HuKM1lL9kzdvPiuTPSzrF2D'):
             self.changing = True
             self.country_cb_1.clear()
             self.country_cb_2.clear()
-            self.countries = self.db.make_request(f"get_countries", self, self.countries)
+            self.countries = self.db.make_request(f"get_countries", self)
             self.country_cb_1.addItems(self.countries)
             self.country_cb_2.addItems(self.countries)
             self.country_cb_1.setCurrentText(text)
             self.country_cb_2.setCurrentText(text)
             self.city_changed(False, self.country_cb_1.currentText())
 
-    def city_changed(self, native=True, text=False):
-        text = self.sender().currentText() if not text else text
+    def city_changed(self, native=True, text=''):
         if not self.changing or not native and text:
             self.changing = True
             self.city_cb_1.clear()
             self.city_cb_2.clear()
-            self.cities = self.db.make_request(f"get_cities~{text}",
-                                               self, self.cities)
+            self.cities = self.db.make_request(f"get_cities~{self.country_cb_1.currentText()}",
+                                               self)
+            assert self.cities == ['Пермь']
             self.city_cb_1.addItems(self.cities)
             self.city_cb_2.addItems(self.cities)
             if native:
-                self.city_cb_1.setCurrentText(text)
-                self.city_cb_2.setCurrentText(text)
+                self.city_cb_1.setCurrentText(native)
+                self.city_cb_2.setCurrentText(native)
             self.school_changed(False, self.city_cb_1.currentText())
 
-    def school_changed(self, native=True, text=False):
-        text = self.sender().currentText() if not text else text
+    def school_changed(self, native=True, text=''):
         if not self.changing or not native and text:
             self.changing = True
             self.school_cb_1.clear()
             self.school_cb_2.clear()
             self.schools = self.db.make_request(f"get_schools~{self.country_cb_1.currentText()}~"
                                                 f"{self.city_cb_1.currentText()}",
-                                                self, self.schools)
+                                                self)
             self.school_cb_1.addItems(self.schools)
             self.school_cb_2.addItems(self.schools)
             if native:
-                self.school_cb_1.setCurrentText(text)
-                self.school_cb_2.setCurrentText(text)
+                self.school_cb_1.setCurrentText(native)
+                self.school_cb_2.setCurrentText(native)
             self.class_number_changed(False, self.school_cb_1.currentText())
 
-    def class_number_changed(self, native=True, text=False):
-        text = self.sender().currentText() if not text else text
+    def class_number_changed(self, native=True, text=''):
         if not self.changing or not native and text:
             self.changing = True
             self.class_number_cb_1.clear()
             self.class_number_cb_2.clear()
             self.class_numbers = self.db.make_request(f"get_class_numbers~"
                                                       f"{self.school_cb_1.currentText()}",
-                                                      self, self.class_numbers)
+                                                      self)
             self.class_number_cb_1.addItems(self.class_numbers)
             self.class_number_cb_2.addItems(self.class_numbers)
             if native:
-                self.class_number_cb_1.setCurrentText(text)
-                self.class_number_cb_2.setCurrentText(text)
+                self.class_number_cb_1.setCurrentText(native)
+                self.class_number_cb_2.setCurrentText(native)
             self.class_letter_changed(False, self.class_number_cb_1.currentText())
 
-    def class_letter_changed(self, native=True, text=False):
-        text = self.sender().currentText() if not text else text
+    def class_letter_changed(self, native=True, text=''):
         if not self.changing or not native and text:
             self.changing = True
             self.class_letter_cb_1.clear()
             self.class_letter_cb_2.clear()
             self.class_letters = self.db.make_request(
                 f"get_class_letters~{self.school_cb_1.currentText()}~"
-                f"{self.class_number_cb_1.currentText()}", self, self.class_letters)
+                f"{self.class_number_cb_1.currentText()}", self)
             self.class_letter_cb_1.addItems(self.class_letters)
             self.class_letter_cb_2.addItems(self.class_letters)
             if native:
-                self.class_letter_cb_1.setCurrentText(text)
-                self.class_letter_cb_2.setCurrentText(text)
+                self.class_letter_cb_1.setCurrentText(native)
+                self.class_letter_cb_2.setCurrentText(native)
             self.changing = False
 
     def first_name_changed(self):
@@ -335,7 +323,7 @@ class AuthDialog(Window, Ui_Dialog):
         self.get_json_key()
         if not self.check_cookie():
             self.connect_widgets_updates()
-            self.country_cb_1.addItems(self.db.make_request(f"get_countries", self))
+            self.country_changed(setup=True)
             self.show()
 
     def disable_window(self):

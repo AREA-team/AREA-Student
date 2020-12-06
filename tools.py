@@ -18,25 +18,23 @@ class Server:
             raise ServerUnreachableException
         if self.correct_public_key():
             self.send_private_key()
-            self.json_key = self.s.recv(4096).decode('utf-8')
+            self.json_key = self.s.recv(4096).decode('utf-8') + self.s.recv(4096).decode('utf-8')
         else:
             raise ServerUnreachableException
 
     def correct_public_key(self):
-        return self.s.recv(1024).decode('utf-8') == open('System Files/public key.txt').read()
+        return self.s.recv(32768).decode('utf-8') == open('System Files/public key.txt').read()
 
     def send_private_key(self):
         self.s.send(bytes(open('System Files/private key.txt').read().encode('utf-8')))
 
-    def make_request(self, request, window, current_items=None):
-        if current_items is None:
-            current_items = []
+    def make_request(self, request, window):
         try:
             self.s.send(bytes(request.encode('utf-8')))
-            return self.s.recv(1024).decode('utf-8').split('~')
+            return self.s.recv(4096).decode('utf-8').split('~')
         except ConnectionError:
             window.disable_window()
-            return current_items
+            return []
 
     def get_json_key(self):
         return self.json_key
