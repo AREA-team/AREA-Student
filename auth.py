@@ -233,10 +233,10 @@ class AuthDialog(Window, Ui_Dialog):
         self.password_le_1.textChanged.connect(self.password_changed)
         self.password_le_2.textChanged.connect(self.password_changed)
 
-    def country_changed(self):
-        if not self.changing and self.sender().currentText():
+    def country_changed(self, text=False):
+        text = self.sender().currentText() if not text else text
+        if not self.changing and text:
             self.changing = True
-            text = self.sender().currentText()
             self.country_cb_1.clear()
             self.country_cb_2.clear()
             self.countries = self.db.make_request(f"get_countries", self, self.countries)
@@ -244,27 +244,27 @@ class AuthDialog(Window, Ui_Dialog):
             self.country_cb_2.addItems(self.countries)
             self.country_cb_1.setCurrentText(text)
             self.country_cb_2.setCurrentText(text)
-            self.city_changed(False)
+            self.city_changed(False, self.country_cb_1.currentText())
 
-    def city_changed(self, native=True):
-        if not self.changing or not native and self.sender().currentText():
+    def city_changed(self, native=True, text=False):
+        text = self.sender().currentText() if not text else text
+        if not self.changing or not native and text:
             self.changing = True
-            text = self.sender().currentText()
             self.city_cb_1.clear()
             self.city_cb_2.clear()
-            self.cities = self.db.make_request(f"get_cities~{self.country_cb_1.currentText()}",
+            self.cities = self.db.make_request(f"get_cities~{text}",
                                                self, self.cities)
             self.city_cb_1.addItems(self.cities)
             self.city_cb_2.addItems(self.cities)
             if native:
                 self.city_cb_1.setCurrentText(text)
                 self.city_cb_2.setCurrentText(text)
-            self.school_changed(False)
+            self.school_changed(False, self.city_cb_1.currentText())
 
-    def school_changed(self, native=True):
-        if not self.changing or not native and self.sender().currentText():
+    def school_changed(self, native=True, text=False):
+        text = self.sender().currentText() if not text else text
+        if not self.changing or not native and text:
             self.changing = True
-            text = self.sender().currentText()
             self.school_cb_1.clear()
             self.school_cb_2.clear()
             self.schools = self.db.make_request(f"get_schools~{self.country_cb_1.currentText()}~"
@@ -275,12 +275,12 @@ class AuthDialog(Window, Ui_Dialog):
             if native:
                 self.school_cb_1.setCurrentText(text)
                 self.school_cb_2.setCurrentText(text)
-            self.class_number_changed(False)
+            self.class_number_changed(False, self.school_cb_1.currentText())
 
-    def class_number_changed(self, native=True):
-        if not self.changing or not native and self.sender().currentText():
+    def class_number_changed(self, native=True, text=False):
+        text = self.sender().currentText() if not text else text
+        if not self.changing or not native and text:
             self.changing = True
-            text = self.sender().currentText()
             self.class_number_cb_1.clear()
             self.class_number_cb_2.clear()
             self.class_numbers = self.db.make_request(f"get_class_numbers~"
@@ -291,12 +291,12 @@ class AuthDialog(Window, Ui_Dialog):
             if native:
                 self.class_number_cb_1.setCurrentText(text)
                 self.class_number_cb_2.setCurrentText(text)
-            self.class_letter_changed(False)
+            self.class_letter_changed(False, self.class_number_cb_1.currentText())
 
-    def class_letter_changed(self, native=True):
-        if not self.changing or not native and self.sender().currentText():
+    def class_letter_changed(self, native=True, text=False):
+        text = self.sender().currentText() if not text else text
+        if not self.changing or not native and text:
             self.changing = True
-            text = self.sender().currentText()
             self.class_letter_cb_1.clear()
             self.class_letter_cb_2.clear()
             self.class_letters = self.db.make_request(
