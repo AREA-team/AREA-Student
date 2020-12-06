@@ -246,7 +246,6 @@ class AuthDialog(Window, Ui_Dialog):
             self.city_cb_2.clear()
             self.cities = self.db.make_request(f"get_cities~{self.country_cb_1.currentText()}",
                                                self)
-            assert self.cities == ['Пермь']
             self.city_cb_1.addItems(self.cities)
             self.city_cb_2.addItems(self.cities)
             if native:
