@@ -47,7 +47,7 @@ class AuthDialog(Window, Ui_Dialog):
 
         self.header.update_tables.setVisible(False)
         self.header.update_tables.setDisabled(True)
-        self.header.setObjectName('')
+        self.header.update_tables.setObjectName('')
         self.connectThread = ConnectThread(self)
         self.connectThread.start()
         self.header.conn_state.clicked.connect(self.connectThread.start)
@@ -78,6 +78,7 @@ class AuthDialog(Window, Ui_Dialog):
                     get(spreadsheetId=self.spreadsheet_id, range='Контроль сдачи!A:DT').execute()
                 self.close()
                 return True
+        return False
 
     def get_tables(self, school, class_number, class_letter):
         credentials_file = 'homework-spreadsheet-d24c606fd7ba.json'
@@ -227,8 +228,8 @@ class AuthDialog(Window, Ui_Dialog):
         self.password_le_1.textChanged.connect(self.password_changed)
         self.password_le_2.textChanged.connect(self.password_changed)
 
-    def country_changed(self, text='', setup=False):
-        if not self.changing and (text or setup) and not text.startswith('HuKM1lL9kzdvPiuTPSzrF2D'):
+    def country_changed(self, text=''):
+        if not self.changing and text:
             self.changing = True
             self.country_cb_1.clear()
             self.country_cb_2.clear()
@@ -322,7 +323,7 @@ class AuthDialog(Window, Ui_Dialog):
         self.get_json_key()
         if not self.check_cookie():
             self.connect_widgets_updates()
-            self.country_changed(setup=True)
+            self.country_changed('True')
             self.show()
 
     def disable_window(self):
