@@ -1,10 +1,12 @@
 from datetime import datetime
 from socket import socket
+from urllib.request import urlopen
 
 from PyQt5.QtCore import QThread, pyqtSignal, QDateTime
 from PyQt5.QtWidgets import QListWidgetItem
 
-SERVER_IP = '188.19.106.140'
+SERVER_IP = urlopen('https://github.com/AREA-team/AREA-Student/releases/download/v1.0/IP_SERVER.txt'
+                    ).read().decode()
 SERVER_PORT = 14600
 
 
@@ -16,14 +18,15 @@ class Server:
             self.s.connect((SERVER_IP, SERVER_PORT))
         except ConnectionError:
             raise ServerUnreachableException
-        if self.correct_public_key():
-            self.send_private_key()
-            self.json_key = self.s.recv(4096).decode('utf-8') + self.s.recv(4096).decode('utf-8')
-        else:
-            raise ServerUnreachableException
+        self.correct_public_key()
+        self.send_private_key()
+        self.json_key = self.s.recv(4096).decode('utf-8') + self.s.recv(4096).decode('utf-8')
 
     def correct_public_key(self):
-        return self.s.recv(32768).decode('utf-8') == open('System Files/public key.txt').read()
+        if self.s.recv(4096).decode('utf-8') == open('System Files/public key.txt').read():
+            return True
+        else:
+            raise ServerUnreachableException
 
     def send_private_key(self):
         self.s.send(bytes(open('System Files/private key.txt').read().encode('utf-8')))

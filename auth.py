@@ -1,6 +1,5 @@
 import os
 import sys
-from urllib.request import urlopen
 
 from subprocess import call
 
@@ -16,10 +15,6 @@ from redefined_widgets import Window
 from tools import BadPasswordException, UserNotRegisteredException, \
     UserRegisteredException, ConnectThread
 from UI.auth_ui import Ui_Dialog
-
-SERVER_IP = urlopen('https://github.com/AREA-team/AREA-Student/releases/download/v1.0/IP_SERVER.txt'
-                    ).read().decode()
-SERVER_PORT = 14600
 
 
 class AuthDialog(Window, Ui_Dialog):
