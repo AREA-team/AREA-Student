@@ -1,5 +1,5 @@
 from datetime import datetime
-from socket import socket
+import socket
 from urllib.request import urlopen
 
 from PyQt5.QtCore import QThread, pyqtSignal, QDateTime
@@ -12,21 +12,20 @@ SERVER_PORT = 14600
 
 class Server:
     def __init__(self):
-        self.s = socket()
-        self.s.settimeout(1.0)
-        try:
-            self.s.connect((SERVER_IP, SERVER_PORT))
-        except ConnectionError:
-            raise ServerUnreachableException
+        self.s = socket.socket()
+        self.s.settimeout(3.0)
+        self.s.connect((SERVER_IP, SERVER_PORT))
         self.correct_public_key()
         self.send_private_key()
-        self.json_key = self.s.recv(4096).decode('utf-8') + self.s.recv(4096).decode('utf-8')
+        try:
+            self.json_key = self.s.recv(4096).decode('utf-8')
+        except socket.timeout:
+            pass
 
     def correct_public_key(self):
         if self.s.recv(4096).decode('utf-8') == open('System Files/public key.txt').read():
             return True
-        else:
-            raise ServerUnreachableException
+        return False
 
     def send_private_key(self):
         self.s.send(bytes(open('System Files/private key.txt').read().encode('utf-8')))
@@ -57,7 +56,11 @@ class ConnectThread(QThread):
             try:
                 self.db = Server()
                 self.connected.emit()
-            except ServerUnreachableException or TimeoutError:
+            except ServerUnreachableException:
+                self.disconnected.emit()
+            except TimeoutError:
+                self.disconnected.emit()
+            except socket.timeout:
                 self.disconnected.emit()
 
 

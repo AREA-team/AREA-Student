@@ -109,6 +109,7 @@ class AuthDialog(Window, Ui_Dialog):
                     if normal_password == ' ':
                         raise UserNotRegisteredException
                     elif password == normal_password:
+                        os.remove('System Files/cookie.txt')
                         f = open('System Files/cookie.txt', 'w', encoding='utf-8')
                         f.write(('\n'.join([email, password, *self.personal_data, school])))
                         return True
@@ -335,7 +336,7 @@ class AuthDialog(Window, Ui_Dialog):
         f = open('homework-spreadsheet-d24c606fd7ba.json', 'w')
         f.write(self.db.get_json_key())
         f.close()
-        call(['attrib', '+h', 'homework-spreadsheet-d24c606fd7ba.json'])
+        call(['attrib', '+h', '+I', '+S', 'homework-spreadsheet-d24c606fd7ba.json'])
 
 
 if __name__ == '__main__':
