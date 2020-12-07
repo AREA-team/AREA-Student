@@ -17,8 +17,10 @@ class Server:
         self.s.connect((SERVER_IP, SERVER_PORT))
         self.correct_public_key()
         self.send_private_key()
+        self.json_key = ''
         try:
-            self.json_key = self.s.recv(32768).decode()
+            while not self.json_key or self.json_key[-2] != '}':
+                self.json_key += self.s.recv(32768).decode()
         except socket.timeout:
             pass
 
