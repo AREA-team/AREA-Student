@@ -18,22 +18,22 @@ class Server:
         self.correct_public_key()
         self.send_private_key()
         try:
-            self.json_key = self.s.recv(4096).decode('utf-8')
+            self.json_key = self.s.recv(32768).decode()
         except socket.timeout:
             pass
 
     def correct_public_key(self):
-        if self.s.recv(4096).decode('utf-8') == open('System Files/public key.txt').read():
+        if self.s.recv(4096).decode() == open('System Files/public key.txt').read():
             return True
         return False
 
     def send_private_key(self):
-        self.s.send(bytes(open('System Files/private key.txt').read().encode('utf-8')))
+        self.s.send(bytes(open('System Files/private key.txt').read().encode()))
 
     def make_request(self, request, window):
         try:
-            self.s.send(bytes(request.encode('utf-8')))
-            return self.s.recv(4096).decode('utf-8').split('~')
+            self.s.send(bytes(request.encode()))
+            return self.s.recv(4096).decode().split('~')
         except ConnectionError:
             window.disable_window()
             return []
