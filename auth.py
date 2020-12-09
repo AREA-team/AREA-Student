@@ -126,6 +126,8 @@ class AuthDialog(Window, Ui_Dialog):
             self.personal_data = first_name, last_name, class_number, class_letter
             table_email, spreadsheet_id = self.get_tables(school, class_number, class_letter)
             for index, first_name_val, last_name_val, *email_val in self.table_emails['values']:
+                first_name_val = first_name_val.strip()
+                last_name_val = last_name_val.strip()
                 if first_name_val == first_name and last_name_val == last_name:
                     table_email.values().batchUpdate(spreadsheetId=spreadsheet_id,
                                                      body={"valueInputOption": "USER_ENTERED",
