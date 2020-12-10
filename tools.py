@@ -5,8 +5,7 @@ from urllib.request import urlopen
 from PyQt5.QtCore import QThread, pyqtSignal, QDateTime
 from PyQt5.QtWidgets import QListWidgetItem
 
-SERVER_IP = urlopen('https://github.com/AREA-team/AREA-Student/releases/download/v1.0/IP_SERVER.txt'
-                    ).read().decode()
+SERVER_IP = '31.163.243.29'
 SERVER_PORT = 14600
 
 
@@ -25,12 +24,12 @@ class Server:
             pass
 
     def correct_public_key(self):
-        if self.s.recv(4096).decode() == open('../System Files/public key.txt').read():
+        if self.s.recv(4096).decode() == open('System Files/public key.txt').read():
             return True
         return False
 
     def send_private_key(self):
-        self.s.send(bytes(open('../System Files/private key.txt').read().encode()))
+        self.s.send(bytes(open('System Files/private key.txt').read().encode()))
 
     def make_request(self, request, window):
         try:

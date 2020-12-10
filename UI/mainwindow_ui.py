@@ -223,4 +223,4 @@ class Ui_MainWindow(object):
         self.add_task_btn.setText(_translate("MainWindow", "Добавить"))
         self.change_task_btn.setText(_translate("MainWindow", "Изменить"))
         self.submit_task_btn.setText(_translate("MainWindow", "Сдать"))
-from Sources.redefined_widgets import Calendar, TitleBar
+from redefined_widgets import Calendar, TitleBar

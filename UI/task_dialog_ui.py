@@ -220,4 +220,4 @@ class Ui_Dialog(object):
         self.ok_btn.setText(_translate("Dialog", "Готово"))
         self.open_link_btn.setText(_translate("Dialog", "Открыть ссылку"))
         self.cancel_btn.setText(_translate("Dialog", "Отмена"))
-from Sources.redefined_widgets import TitleBar
+from redefined_widgets import TitleBar

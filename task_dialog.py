@@ -4,9 +4,9 @@ import webbrowser
 from PyQt5.QtCore import QDateTime
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication
-from Sources.redefined_widgets import Window
+from redefined_widgets import Window
 from UI.task_dialog_ui import Ui_Dialog
-from Sources.tools import ConnectThread
+from tools import ConnectThread
 
 
 class TaskDialog(Window, Ui_Dialog):
@@ -106,7 +106,9 @@ class TaskDialog(Window, Ui_Dialog):
 
     def change_task(self):
         task_letter = self.get_task_letter(self.task_index)
-        if self.link_le.text():
+        link = self.link_le.text()
+        text = self.task_tb.toPlainText().replace("\"", "\"\"")
+        if link:
             self.service.values().batchUpdate(spreadsheetId=self.spreadsheet_id,
                                               body={
                                                   "valueInputOption": "USER_ENTERED",
@@ -115,8 +117,8 @@ class TaskDialog(Window, Ui_Dialog):
                                                                 '3' + ':' + task_letter + '4',
                                                        "majorDimension": "COLUMNS",
                                                        "values": [
-                                                           [f'=ГИПЕРССЫЛКА("{self.link_le.text()}'
-                                                            f'";"{self.task_tb.toPlainText()}")',
+                                                           [f'=ГИПЕРССЫЛКА("{link}'
+                                                            f'";"{text}")',
                                                             self.deadline_time.dateTime(
                                                             ).toPyDateTime().strftime(
                                                                 '%d.%m %H:%M')]]}]}).execute()
@@ -189,14 +191,14 @@ class TaskDialog(Window, Ui_Dialog):
 
     def disable_window(self):
         self.connectThread.quit()
-        self.header.conn_state.setIcon(QIcon(QPixmap('../System Files/no_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/no_connection.png')))
         self.good_conn = False
         self.verticalLayout_2.setEnabled(False)
         self.header.setEnabled(True)
 
     def connected(self):
         self.connectThread.quit()
-        self.header.conn_state.setIcon(QIcon(QPixmap('../System Files/good_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
         self.setEnabled(True)
         self.good_conn = True
 

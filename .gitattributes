@@ -1,4 +1,9 @@
-/Sources/ export-ignore
+/auth.py export-ignore
+/main.py export-ignore
+/mainwindow.py export-ignore
+/redefined_widgets.py export-ignore
+/task_dialog.py export-ignore
+/tools.py export-ignore
 /UI/ export-ignore
 /requirements.txt export-ignore
 /.gitattributes export-ignore

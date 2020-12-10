@@ -411,4 +411,4 @@ class Ui_Dialog(object):
         self.label_20.setText(_translate("Dialog", "Повторите пароль"))
         self.sign_up_btn.setText(_translate("Dialog", "Зарегистрироваться"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Dialog", "Регистрация", "0"))
-from Sources.redefined_widgets import TitleBar
+from redefined_widgets import TitleBar
