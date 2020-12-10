@@ -1,4 +1,5 @@
 /Sources/ export-ignore
+/UI/ export-ignore
 /requirements.txt export-ignore
 /.gitattributes export-ignore
 /versionfile.txt export-ignore
