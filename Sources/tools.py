@@ -25,12 +25,12 @@ class Server:
             pass
 
     def correct_public_key(self):
-        if self.s.recv(4096).decode() == open('System Files/public key.txt').read():
+        if self.s.recv(4096).decode() == open('../System Files/public key.txt').read():
             return True
         return False
 
     def send_private_key(self):
-        self.s.send(bytes(open('System Files/private key.txt').read().encode()))
+        self.s.send(bytes(open('../System Files/private key.txt').read().encode()))
 
     def make_request(self, request, window):
         try:

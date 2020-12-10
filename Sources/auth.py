@@ -11,8 +11,8 @@ from PyQt5.QtWidgets import QApplication
 
 from oauth2client.service_account import ServiceAccountCredentials
 
-from redefined_widgets import Window
-from tools import BadPasswordException, UserNotRegisteredException, \
+from Sources.redefined_widgets import Window
+from Sources.tools import BadPasswordException, UserNotRegisteredException, \
     UserRegisteredException, ConnectThread
 from UI.auth_ui import Ui_Dialog
 
@@ -52,7 +52,7 @@ class AuthDialog(Window, Ui_Dialog):
         self.sign_up_btn.clicked.connect(self.sign_up)
 
     def check_cookie(self):
-        lines = list(map(lambda x: x.strip(), open('System Files/cookie.txt',
+        lines = list(map(lambda x: x.strip(), open('../System Files/cookie.txt',
                                                    encoding='utf-8').readlines()))
         if len(lines) == 7:
             email, cookie, first_name, last_name, class_number, class_letter, school = lines
@@ -109,8 +109,8 @@ class AuthDialog(Window, Ui_Dialog):
                     if normal_password == ' ':
                         raise UserNotRegisteredException
                     elif password == normal_password:
-                        os.remove('System Files/cookie.txt')
-                        f = open('System Files/cookie.txt', 'w', encoding='utf-8')
+                        os.remove('../System Files/cookie.txt')
+                        f = open('../System Files/cookie.txt', 'w', encoding='utf-8')
                         f.write(('\n'.join([email, password, *self.personal_data, school])))
                         return True
                     raise BadPasswordException
@@ -141,7 +141,7 @@ class AuthDialog(Window, Ui_Dialog):
                                                            }).execute()
                     if self.db.make_request(f'add_email~{email}~{password}', self)[0] == \
                             'Successful':
-                        f = open('System Files/cookie.txt', 'w', encoding='utf-8')
+                        f = open('../System Files/cookie.txt', 'w', encoding='utf-8')
                         f.write('\n'.join([email, password, *self.personal_data, school]))
                         return True
                     raise UserRegisteredException
@@ -315,7 +315,7 @@ class AuthDialog(Window, Ui_Dialog):
     def connected(self):
         self.connectThread.quit()
         self.db = self.connectThread.db
-        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('../System Files/good_connection.png')))
         self.tabWidget.setDisabled(False)
         self.good_conn = True
         self.get_json_key()
@@ -326,7 +326,7 @@ class AuthDialog(Window, Ui_Dialog):
 
     def disable_window(self):
         self.connectThread.quit()
-        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/no_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('../System Files/no_connection.png')))
         self.good_conn = False
         self.tabWidget.setDisabled(True)
         self.header.setEnabled(True)

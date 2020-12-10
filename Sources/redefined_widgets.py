@@ -165,7 +165,7 @@ class Window(QDialog):
         self.windowIconChanged.connect(self.header.setIcon)
 
         self.header.resize(self.width(), self.header.height())
-        self.header.setIcon(QIcon(QPixmap('System Files/Logo.png')))
+        self.header.setIcon(QIcon(QPixmap('../System Files/Logo.png')))
         self.setWindowTitle('AREA: Student')
 
     def move(self, pos):

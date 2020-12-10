@@ -1,9 +1,9 @@
 from PyQt5.QtGui import QIcon, QPixmap
 
-from redefined_widgets import Window
+from Sources.redefined_widgets import Window
 from UI.mainwindow_ui import Ui_MainWindow
-from tools import ConnectThread, Server, Task
-from task_dialog import TaskDialog
+from Sources.tools import ConnectThread, Server, Task
+from Sources.task_dialog import TaskDialog
 
 
 class MainWindow(Window, Ui_MainWindow):
@@ -25,12 +25,12 @@ class MainWindow(Window, Ui_MainWindow):
         self.main_label.setText(f'{self.first_name} {self.last_name} '
                                 f'{self.class_number + self.class_letter}')
         self.header.setHeight(30)
-        self.logo_label.setPixmap(QPixmap('System Files/Logo.png'))
-        self.header.update_tables.setIcon(QIcon('System Files/update_icon.png'))
-        self.add_task_btn.setIcon(QIcon('System Files/add_icon.png'))
-        self.change_task_btn.setIcon(QIcon('System Files/change_icon.png'))
-        self.submit_task_btn.setIcon(QIcon('System Files/submit_icon.png'))
-        self.quit_btn.setIcon(QIcon('System Files/exit_icon.png'))
+        self.logo_label.setPixmap(QPixmap('../System Files/Logo.png'))
+        self.header.update_tables.setIcon(QIcon('../System Files/update_icon.png'))
+        self.add_task_btn.setIcon(QIcon('../System Files/add_icon.png'))
+        self.change_task_btn.setIcon(QIcon('../System Files/change_icon.png'))
+        self.submit_task_btn.setIcon(QIcon('../System Files/submit_icon.png'))
+        self.quit_btn.setIcon(QIcon('../System Files/exit_icon.png'))
 
         self.connectThread = ConnectThread(self)
         self.connectThread.start()
@@ -124,13 +124,13 @@ class MainWindow(Window, Ui_MainWindow):
 
     def exit(self):
         self.need_auth = True
-        f = open('System Files/cookie.txt', 'w')
+        f = open('../System Files/cookie.txt', 'w')
         f.close()
         self.close()
 
     def disable_window(self):
         self.connectThread.quit()
-        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/no_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('../System Files/no_connection.png')))
         self.header.update_tables.setDisabled(True)
         self.good_conn = False
         self.verticalLayout_2.setEnabled(False)
@@ -139,7 +139,7 @@ class MainWindow(Window, Ui_MainWindow):
     def connected(self):
         self.connectThread.quit()
         self.db = self.connectThread.db
-        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('../System Files/good_connection.png')))
         self.header.update_tables.setDisabled(False)
         self.setEnabled(True)
         self.good_conn = True

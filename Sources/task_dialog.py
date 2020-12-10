@@ -4,9 +4,9 @@ import webbrowser
 from PyQt5.QtCore import QDateTime
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication
-from redefined_widgets import Window
+from Sources.redefined_widgets import Window
 from UI.task_dialog_ui import Ui_Dialog
-from tools import ConnectThread
+from Sources.tools import ConnectThread
 
 
 class TaskDialog(Window, Ui_Dialog):
@@ -189,14 +189,14 @@ class TaskDialog(Window, Ui_Dialog):
 
     def disable_window(self):
         self.connectThread.quit()
-        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/no_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('../System Files/no_connection.png')))
         self.good_conn = False
         self.verticalLayout_2.setEnabled(False)
         self.header.setEnabled(True)
 
     def connected(self):
         self.connectThread.quit()
-        self.header.conn_state.setIcon(QIcon(QPixmap('System Files/good_connection.png')))
+        self.header.conn_state.setIcon(QIcon(QPixmap('../System Files/good_connection.png')))
         self.setEnabled(True)
         self.good_conn = True
 
