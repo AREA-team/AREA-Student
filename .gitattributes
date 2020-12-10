@@ -1,2 +1,5 @@
 /Sources/ export-ignore
-requirements.txt export-ignore
+/requirements.txt export-ignore
+/.gitattributes export-ignore
+/versionfile.txt export-ignore
+/versionfile.yml export-ignore
