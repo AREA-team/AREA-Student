@@ -5,5 +5,5 @@
 /task_dialog.py export-ignore
 /tools.py export-ignore
 /UI/ export-ignore
-/"Technical Files" export-ignore
+/"Technical Files"/ export-ignore
 /.gitattributes export-ignore
