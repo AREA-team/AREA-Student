@@ -133,7 +133,7 @@ font: 57 10pt &quot;IBM Plex Sans&quot;;
       <enum>QTabWidget::Triangular</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -391,6 +391,19 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          </property>
         </widget>
        </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item alignment="Qt::AlignTop">
         <widget class="QLabel" name="state_label1">
          <property name="sizePolicy">
@@ -409,10 +422,13 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
           <string notr="true"/>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string/>
+          <string>Введите данные</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -432,7 +448,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
           <enum>QLayout::SetDefaultConstraint</enum>
          </property>
          <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::FieldsStayAtSizeHint</enum>
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
          <property name="rowWrapPolicy">
           <enum>QFormLayout::DontWrapRows</enum>
@@ -453,7 +469,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <item row="1" column="1">
           <widget class="QComboBox" name="country_cb_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -470,7 +486,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <item row="2" column="1">
           <widget class="QComboBox" name="city_cb_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -487,7 +503,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <item row="3" column="1">
           <widget class="QComboBox" name="school_cb_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -504,7 +520,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <item row="4" column="1">
           <widget class="QComboBox" name="class_number_cb_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -521,7 +537,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <item row="5" column="1">
           <widget class="QComboBox" name="class_letter_cb_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -538,7 +554,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <item row="6" column="1">
           <widget class="QLineEdit" name="first_name_le_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -555,7 +571,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <item row="7" column="1">
           <widget class="QLineEdit" name="last_name_le_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -572,7 +588,7 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <item row="8" column="1">
           <widget class="QLineEdit" name="email_le_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -588,6 +604,12 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          </item>
          <item row="9" column="1">
           <widget class="QLineEdit" name="password_le_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="echoMode">
             <enum>QLineEdit::PasswordEchoOnEdit</enum>
            </property>
@@ -602,6 +624,12 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          </item>
          <item row="10" column="1">
           <widget class="QLineEdit" name="password_repeat_le_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="echoMode">
             <enum>QLineEdit::PasswordEchoOnEdit</enum>
            </property>
@@ -639,6 +667,19 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          </property>
         </widget>
        </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item alignment="Qt::AlignTop">
         <widget class="QLabel" name="state_label2">
          <property name="sizePolicy">
@@ -656,8 +697,11 @@ font: 57 14pt &quot;IBM Plex Sans&quot;;
          <property name="styleSheet">
           <string notr="true"/>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
          <property name="text">
-          <string/>
+          <string>Введите данные</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

@@ -72,6 +72,18 @@ class TaskDialog(Window, Ui_Dialog):
                                          }
                                      }]}).execute()
         self.task_index = index
+        task_letter = self.get_task_letter(self.task_index)
+        excludes = [row[index - 1] if row[index - 1] == 'x' else ''
+                    for row in self.task_table['values'][4:]]
+        print(excludes)
+        self.service.values().batchUpdate(spreadsheetId=self.spreadsheet_id,
+                                          body={
+                                              "valueInputOption": "USER_ENTERED",
+                                              "data": [
+                                                  {"range": 'Контроль сдачи!' + task_letter + '5:' +
+                                                            task_letter + str(len(excludes) + 4),
+                                                   "majorDimension": "COLUMNS",
+                                                   "values": [excludes]}]}).execute()
         self.change_task()
 
     def open_link(self):
