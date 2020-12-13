@@ -24,10 +24,14 @@ if __name__ == '__main__':
         auth.exec()
         need_auth = False
         if auth.authorized:
+            auth.db.s.send(bytes('end'.encode()))
+            auth.db.s.close()
             main = MainWindow(auth.table_tasks, auth.personal_data, auth.service,
                               auth.spreadsheet_id)
             main.show()
             main.exec()
+            main.db.s.send(bytes('end'.encode()))
+            main.db.s.close()
             need_auth = main.need_auth
     if os.path.exists('homework-spreadsheet-d24c606fd7ba.json'):
         os.remove('homework-spreadsheet-d24c606fd7ba.json')
