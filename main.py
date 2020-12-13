@@ -22,10 +22,10 @@ if __name__ == '__main__':
     while need_auth:
         auth = AuthDialog()
         auth.exec()
+        auth.db.s.send(bytes('end'.encode()))
+        auth.db.s.close()
         need_auth = False
         if auth.authorized:
-            auth.db.s.send(bytes('end'.encode()))
-            auth.db.s.close()
             main = MainWindow(auth.table_tasks, auth.personal_data, auth.service,
                               auth.spreadsheet_id)
             main.show()
