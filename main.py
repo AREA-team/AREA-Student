@@ -22,8 +22,9 @@ if __name__ == '__main__':
     while need_auth:
         auth = AuthDialog()
         auth.exec()
-        auth.db.s.send(bytes('end'.encode()))
-        auth.db.s.close()
+        if auth.good_conn:
+            auth.db.s.send(bytes('end'.encode()))
+            auth.db.s.close()
         need_auth = False
         if auth.authorized:
             main = MainWindow(auth.table_tasks, auth.personal_data, auth.service,

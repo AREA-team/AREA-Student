@@ -75,7 +75,6 @@ class TaskDialog(Window, Ui_Dialog):
         task_letter = self.get_task_letter(self.task_index)
         excludes = [row[index - 1] if row[index - 1] == 'x' else ''
                     for row in self.task_table['values'][4:]]
-        print(excludes)
         self.service.values().batchUpdate(spreadsheetId=self.spreadsheet_id,
                                           body={
                                               "valueInputOption": "USER_ENTERED",

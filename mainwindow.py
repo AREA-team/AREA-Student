@@ -63,6 +63,8 @@ class MainWindow(Window, Ui_MainWindow):
                         )
         tw.show()
         tw.exec()
+        tw.connectThread.db.s.send(bytes('end'.encode()))
+        tw.connectThread.db.s.close()
         self.update_tables()
 
     def change_task(self):
@@ -76,6 +78,8 @@ class MainWindow(Window, Ui_MainWindow):
                             )
             tw.show()
             tw.exec()
+            tw.connectThread.db.s.send(bytes('end'.encode()))
+            tw.connectThread.db.s.close()
             self.update_tables()
 
     def submit_task(self):
@@ -88,6 +92,8 @@ class MainWindow(Window, Ui_MainWindow):
                             )
             tw.show()
             tw.exec()
+            tw.connectThread.db.s.send(bytes('end'.encode()))
+            tw.connectThread.db.s.close()
             self.update_tables()
 
     def parse_task_table(self):
